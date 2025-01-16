@@ -1,0 +1,55 @@
+{
+  "name": "n8n-nodes-d7-api",
+  "version": "0.1.0",
+  "description": "Custom n8n nodes for D7 API",
+  "keywords": [
+    "n8n-community-node-package"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "author": {
+    "name": "Your Name",
+    "email": "your.email@example.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kishord7/n8n-nodes-d7-api.git"
+  },
+  "engines": {
+    "node": ">=18.10"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "preinstall": "npx only-allow npm",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix",
+    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes credentials package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/D7Api.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/D7Api/D7Api.node.js",
+      "dist/nodes/D7Api/D7Whatsapp.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^7.15.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.1",
+    "n8n-workflow": "*",
+    "prettier": "^3.3.2",
+    "typescript": "^5.5.3"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}

@@ -1,0 +1,12 @@
+{
+    "name": "n8n-nodes-d7-api",
+    "version": "1.0.0",
+    "n8n": {
+      "type": "node",
+      "category": "transform"
+    },
+    "dependencies": {
+        "n8n-workflow": "^1.70.0"
+    }
+  }
+  
