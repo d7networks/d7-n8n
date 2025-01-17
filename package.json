@@ -1,12 +1,12 @@
 {
   "name": "n8n-nodes-d7-api",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Custom n8n nodes for D7 API",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/kishord7/n8n-nodes-d7-api#readme",
+  "homepage": "https://d7networks.com",
   "author": "int-dev@d7networks.com",
   "repository": {
     "type": "git",
@@ -168,6 +168,7 @@
     "is-weakset": "^2.0.4",
     "isarray": "^2.0.5",
     "isexe": "^2.0.0",
+    "jest": "^29.7.0",
     "jmespath": "^0.16.0",
     "js-base64": "^3.7.2",
     "js-yaml": "^4.1.0",
