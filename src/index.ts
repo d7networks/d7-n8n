@@ -1,5 +1,4 @@
-// import { D7Api } from './nodes/D7Api.node';  // Import your custom node
-// import {D7Whatsapp} from './nodes/D7Whatsapp.node';
 import {D7Messaging} from './nodes/D7Messaging.node';
+import {D7Api} from     './credentials/D7Api.credentials';
 
-export {D7Messaging};  // Export your custom node so n8n can recognize it
+export {D7Messaging,D7Api};  // Export your custom node so n8n can recognize it

@@ -52,6 +52,12 @@ import {
       },
       inputs: ['main' as NodeConnectionType],
       outputs: ['main' as NodeConnectionType],
+      credentials: [
+        {
+            name: 'd7Api',
+            required: true,
+        },
+    ],
       properties: [
         {
           displayName: 'Channel',
@@ -240,23 +246,17 @@ import {
             },
           ],
           description: 'Template body parameters',
-        },
-        {
-          displayName: 'API Key',
-          name: 'apiKey',
-          type: 'string',
-          default: '',
-          description: 'API Key from D7 portal',
-          required: true,
-        },
+        }
       ],
     };
   
     async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-      const channel = this.getNodeParameter('channel', 0) as string;
-      const recipients = this.getNodeParameter('recipients', 0) as string;
-      const apiKey = this.getNodeParameter('apiKey', 0) as string;
-  
+        const credentials = await this.getCredentials('d7Api');
+    const apiKey = credentials.apiKey as string;
+    
+    const channel = this.getNodeParameter('channel', 0) as string;
+    const recipients = this.getNodeParameter('recipients', 0) as string;
+
       if (channel === 'sms') {
         const content = this.getNodeParameter('content', 0) as string;
         

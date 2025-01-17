@@ -25,6 +25,12 @@ class D7Messaging {
             },
             inputs: ['main'],
             outputs: ['main'],
+            credentials: [
+                {
+                    name: 'd7Api',
+                    required: true,
+                },
+            ],
             properties: [
                 {
                     displayName: 'Channel',
@@ -213,23 +219,16 @@ class D7Messaging {
                         },
                     ],
                     description: 'Template body parameters',
-                },
-                {
-                    displayName: 'API Key',
-                    name: 'apiKey',
-                    type: 'string',
-                    default: '',
-                    description: 'API Key from D7 portal',
-                    required: true,
-                },
+                }
             ],
         };
     }
     execute() {
         return __awaiter(this, void 0, void 0, function* () {
+            const credentials = yield this.getCredentials('d7Api');
+            const apiKey = credentials.apiKey;
             const channel = this.getNodeParameter('channel', 0);
             const recipients = this.getNodeParameter('recipients', 0);
-            const apiKey = this.getNodeParameter('apiKey', 0);
             if (channel === 'sms') {
                 const content = this.getNodeParameter('content', 0);
                 const messageData = {

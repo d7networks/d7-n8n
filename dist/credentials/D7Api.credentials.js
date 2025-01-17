@@ -4,7 +4,7 @@ exports.D7Api = void 0;
 class D7Api {
     constructor() {
         this.name = 'd7Api';
-        this.displayName = 'D7 API';
+        this.displayName = 'D7 API credentials';
         this.documentationUrl = 'https://d7networks.com/';
         this.properties = [
             {

@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-d7-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Custom n8n nodes for D7 API",
   "keywords": [
     "n8n-community-node-package"
@@ -23,7 +23,7 @@
     "format": "prettier nodes credentials --write",
     "lint": "eslint  src src/nodes src/credentials",
     "lintfix": "eslint src/nodes src/credentials  --fix",
-    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js src/nodes/D7Api src/credentials"
+    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js src/nodes src/credentials"
   },
   "files": [
     "dist"

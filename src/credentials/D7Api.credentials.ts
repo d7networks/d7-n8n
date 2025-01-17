@@ -5,7 +5,7 @@ import {
 
 export class D7Api implements ICredentialType {
     name = 'd7Api';
-    displayName = 'D7 API';
+    displayName = 'D7 API credentials';
     documentationUrl = 'https://d7networks.com/';
     properties: INodeProperties[] = [
         {
