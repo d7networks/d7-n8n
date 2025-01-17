@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-d7-api",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Custom n8n nodes for D7 API",
   "keywords": [
     "n8n-community-node-package"
@@ -34,8 +34,7 @@
       "dist/credentials/D7Api.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/D7Api/D7Api.node.js",
-      "dist/nodes/D7Api/D7Whatsapp.node.js"
+      "dist/nodes/D7Messaging/D7Messaging.node.js"
     ]
   },
   "devDependencies": {
