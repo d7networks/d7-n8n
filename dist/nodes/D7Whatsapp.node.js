@@ -31,30 +31,12 @@ class D7Whatsapp {
                     name: 'messageType',
                     type: 'options',
                     options: [
-                        {
-                            name: 'WhatsApp Utility Text',
-                            value: 'utilityText',
-                        },
-                        {
-                            name: 'WhatsApp Utility Media',
-                            value: 'utilityMedia',
-                        },
-                        {
-                            name: 'WhatsApp Marketing Text',
-                            value: 'marketingText',
-                        },
-                        {
-                            name: 'WhatsApp Marketing Media',
-                            value: 'marketingMedia',
-                        },
-                        {
-                            name: 'WhatsApp Service Text',
-                            value: 'serviceText',
-                        },
-                        {
-                            name: 'WhatsApp Service Media',
-                            value: 'serviceMedia',
-                        },
+                        { name: 'WhatsApp Utility Text', value: 'utilityText' },
+                        { name: 'WhatsApp Utility Media', value: 'utilityMedia' },
+                        { name: 'WhatsApp Marketing Text', value: 'marketingText' },
+                        { name: 'WhatsApp Marketing Media', value: 'marketingMedia' },
+                        { name: 'WhatsApp Service Text', value: 'serviceText' },
+                        { name: 'WhatsApp Service Media', value: 'serviceMedia' },
                     ],
                     default: 'utilityText',
                     required: true,
@@ -67,7 +49,6 @@ class D7Whatsapp {
                     description: 'WhatsApp number registered with D7 Networks',
                     required: true,
                 },
-                // Template-specific fields
                 {
                     displayName: 'Template ID',
                     name: 'templateId',
@@ -93,7 +74,6 @@ class D7Whatsapp {
                         },
                     },
                 },
-                // Service Text specific fields
                 {
                     displayName: 'Message Body',
                     name: 'messageBody',
@@ -119,7 +99,6 @@ class D7Whatsapp {
                         },
                     },
                 },
-                // Service Media specific fields
                 {
                     displayName: 'Media Caption',
                     name: 'mediaCaption',
@@ -132,7 +111,6 @@ class D7Whatsapp {
                         },
                     },
                 },
-                // Common media fields
                 {
                     displayName: 'Media URL',
                     name: 'mediaUrl',
@@ -155,18 +133,9 @@ class D7Whatsapp {
                         },
                     },
                     options: [
-                        {
-                            name: 'Image',
-                            value: 'image',
-                        },
-                        {
-                            name: 'Video',
-                            value: 'video',
-                        },
-                        {
-                            name: 'Document',
-                            value: 'document',
-                        },
+                        { name: 'Image', value: 'image' },
+                        { name: 'Video', value: 'video' },
+                        { name: 'Document', value: 'document' },
                     ],
                     default: 'image',
                 },
@@ -178,7 +147,6 @@ class D7Whatsapp {
                     description: 'Comma-separated list of phone numbers to send messages to',
                     required: true,
                 },
-                // Template parameters
                 {
                     displayName: 'Body Parameters',
                     name: 'bodyParameters',
@@ -197,20 +165,8 @@ class D7Whatsapp {
                             name: 'parameters',
                             displayName: 'Parameter',
                             values: [
-                                {
-                                    displayName: 'Key',
-                                    name: 'key',
-                                    type: 'string',
-                                    default: '',
-                                    description: 'Parameter key',
-                                },
-                                {
-                                    displayName: 'Value',
-                                    name: 'value',
-                                    type: 'string',
-                                    default: '',
-                                    description: 'Parameter value',
-                                },
+                                { displayName: 'Key', name: 'key', type: 'string', default: '' },
+                                { displayName: 'Value', name: 'value', type: 'string', default: '' },
                             ],
                         },
                     ],
@@ -223,7 +179,7 @@ class D7Whatsapp {
                     default: '',
                     description: 'API Key from D7 portal',
                     required: true,
-                }
+                },
             ],
         };
     }
@@ -233,12 +189,11 @@ class D7Whatsapp {
             const originator = this.getNodeParameter('originator', 0);
             const recipients = this.getNodeParameter('recipients', 0);
             const apiKey = this.getNodeParameter('apiKey', 0);
-            const recipientsList = recipients.split(',').map(recipient => ({
+            const recipientsList = recipients.split(',').map((recipient) => ({
                 recipient: recipient.trim(),
                 recipient_type: 'individual',
             }));
-            let content = {};
-            // Handle different message types
+            let content;
             if (messageType === 'serviceText') {
                 const messageBody = this.getNodeParameter('messageBody', 0);
                 const previewUrl = this.getNodeParameter('previewUrl', 0);
@@ -264,7 +219,6 @@ class D7Whatsapp {
                 };
             }
             else {
-                // Handle template-based messages (utility and marketing)
                 const templateId = this.getNodeParameter('templateId', 0);
                 const language = this.getNodeParameter('language', 0);
                 const bodyParametersData = this.getNodeParameter('bodyParameters', 0);
