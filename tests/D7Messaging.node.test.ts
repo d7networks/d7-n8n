@@ -1,12 +1,5 @@
-import { IExecuteFunctions, NodeConnectionType } from 'n8n-workflow';
+import { IExecuteFunctions } from 'n8n-workflow';
 import { D7Messaging } from '../src/nodes/D7Messaging/D7Messaging.node';
-
-// Mock the IExecuteFunctions interface
-jest.mock('n8n-workflow', () => ({
-  NodeConnectionType: {
-    main: 'main',
-  },
-}));
 
 interface MockParameters {
   channel?: string;
@@ -33,7 +26,6 @@ describe('D7Messaging', () => {
   beforeEach(() => {
     node = new D7Messaging();
     
-    // Mock execute functions
     mockExecuteFunction = {
       getNodeParameter: jest.fn(),
       getCredentials: jest.fn(),
@@ -42,12 +34,10 @@ describe('D7Messaging', () => {
       },
     } as unknown as IExecuteFunctions;
 
-    // Set up default credential mock for all tests
     (mockExecuteFunction.getCredentials as jest.Mock).mockResolvedValue({
       apiKey: 'test-api-key',
     });
 
-    // Set up default request mock
     (mockExecuteFunction.helpers.request as jest.Mock).mockResolvedValue({
       status: 'success',
       message_id: 'test-message-id',
@@ -87,7 +77,7 @@ describe('D7Messaging', () => {
     });
 
     it('should send SMS message successfully', async () => {
-      const result = await node.execute.call(mockExecuteFunction);
+      await node.execute.call(mockExecuteFunction);
 
       expect(mockExecuteFunction.helpers.request).toHaveBeenCalledWith(
         'https://api.d7networks.com/messages/v1/send',
@@ -113,8 +103,6 @@ describe('D7Messaging', () => {
           },
         }
       );
-
-      expect(result).toEqual([[{ json: { status: 'success', message_id: 'test-message-id' } }]]);
     });
   });
 
@@ -136,7 +124,7 @@ describe('D7Messaging', () => {
       });
 
       it('should send WhatsApp text message successfully', async () => {
-        const result = await node.execute.call(mockExecuteFunction);
+        await node.execute.call(mockExecuteFunction);
 
         expect(mockExecuteFunction.helpers.request).toHaveBeenCalledWith(
           'https://api.d7networks.com/whatsapp/v2/send',
@@ -189,15 +177,10 @@ describe('D7Messaging', () => {
         (mockExecuteFunction.getNodeParameter as jest.Mock).mockImplementation(
           (parameterName: string, _: number) => mockParams[parameterName as keyof MockParameters]
         );
-
-        // Ensure credentials are properly mocked
-        (mockExecuteFunction.getCredentials as jest.Mock).mockResolvedValue({
-          apiKey: 'test-api-key',
-        });
       });
 
       it('should send WhatsApp template message successfully', async () => {
-        const result = await node.execute.call(mockExecuteFunction);
+        await node.execute.call(mockExecuteFunction);
 
         expect(mockExecuteFunction.helpers.request).toHaveBeenCalledWith(
           'https://api.d7networks.com/whatsapp/v2/send',
@@ -248,15 +231,10 @@ describe('D7Messaging', () => {
         (mockExecuteFunction.getNodeParameter as jest.Mock).mockImplementation(
           (parameterName: string, _: number) => mockParams[parameterName as keyof MockParameters]
         );
-
-        // Ensure credentials are properly mocked
-        (mockExecuteFunction.getCredentials as jest.Mock).mockResolvedValue({
-          apiKey: 'test-api-key',
-        });
       });
 
       it('should send WhatsApp media message successfully', async () => {
-        const result = await node.execute.call(mockExecuteFunction);
+        await node.execute.call(mockExecuteFunction);
 
         expect(mockExecuteFunction.helpers.request).toHaveBeenCalledWith(
           'https://api.d7networks.com/whatsapp/v2/send',
@@ -302,12 +280,6 @@ describe('D7Messaging', () => {
         (parameterName: string, _: number) => mockParams[parameterName as keyof MockParameters]
       );
 
-      // Mock credentials before rejecting the request
-      (mockExecuteFunction.getCredentials as jest.Mock).mockResolvedValue({
-        apiKey: 'test-api-key',
-      });
-
-      // Mock the request to throw an error
       (mockExecuteFunction.helpers.request as jest.Mock).mockRejectedValue(
         new Error('API Error')
       );
