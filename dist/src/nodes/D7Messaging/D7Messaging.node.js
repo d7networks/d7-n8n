@@ -21,6 +21,7 @@ class D7Messaging {
             description: 'Send messages using D7 APIs (SMS & WhatsApp)',
             defaults: {
                 name: 'D7 Messaging',
+                color: '#1F8E3C',
             },
             inputs: ['main'],
             outputs: ['main'],
@@ -42,6 +43,7 @@ class D7Messaging {
                     default: 'sms',
                     required: true,
                 },
+                // SMS Properties
                 {
                     displayName: 'Message Content',
                     name: 'content',
@@ -54,6 +56,7 @@ class D7Messaging {
                         },
                     },
                 },
+                // WhatsApp Properties
                 {
                     displayName: 'Message Type',
                     name: 'messageType',
@@ -64,12 +67,12 @@ class D7Messaging {
                         },
                     },
                     options: [
-                        { name: 'WhatsApp Marketing Media', value: 'marketingMedia' },
-                        { name: 'WhatsApp Marketing Text', value: 'marketingText' },
-                        { name: 'WhatsApp Service Media', value: 'serviceMedia' },
-                        { name: 'WhatsApp Service Text', value: 'serviceText' },
-                        { name: 'WhatsApp Utility Media', value: 'utilityMedia' },
                         { name: 'WhatsApp Utility Text', value: 'utilityText' },
+                        { name: 'WhatsApp Utility Media', value: 'utilityMedia' },
+                        { name: 'WhatsApp Marketing Text', value: 'marketingText' },
+                        { name: 'WhatsApp Marketing Media', value: 'marketingMedia' },
+                        { name: 'WhatsApp Service Text', value: 'serviceText' },
+                        { name: 'WhatsApp Service Media', value: 'serviceMedia' },
                     ],
                     default: 'utilityText',
                 },
@@ -95,22 +98,44 @@ class D7Messaging {
                     displayOptions: {
                         show: {
                             channel: ['whatsapp'],
-                            messageType: [
-                                'utilityText',
-                                'utilityMedia',
-                                'marketingText',
-                                'marketingMedia',
-                            ],
+                            messageType: ['utilityText', 'utilityMedia', 'marketingText', 'marketingMedia'],
                         },
                     },
                     required: true,
                 },
                 {
-                    displayName: 'Whether to Preview URL',
+                    displayName: 'Language',
+                    name: 'language',
+                    type: 'string',
+                    default: 'en',
+                    description: 'Template language code',
+                    displayOptions: {
+                        show: {
+                            channel: ['whatsapp'],
+                            messageType: ['utilityText', 'utilityMedia', 'marketingText', 'marketingMedia'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Message Body',
+                    name: 'messageBody',
+                    type: 'string',
+                    default: '',
+                    description: 'Text message content',
+                    displayOptions: {
+                        show: {
+                            channel: ['whatsapp'],
+                            messageType: ['serviceText'],
+                        },
+                    },
+                    required: true,
+                },
+                {
+                    displayName: 'Preview URL',
                     name: 'previewUrl',
                     type: 'boolean',
                     default: true,
-                    description: 'Whether to enable URL preview in message',
+                    description: 'Enable URL preview in message',
                     displayOptions: {
                         show: {
                             channel: ['whatsapp'],
@@ -118,6 +143,83 @@ class D7Messaging {
                         },
                     },
                 },
+                {
+                    displayName: 'Media Caption',
+                    name: 'mediaCaption',
+                    type: 'string',
+                    default: '',
+                    description: 'Caption for the media',
+                    displayOptions: {
+                        show: {
+                            channel: ['whatsapp'],
+                            messageType: ['serviceMedia'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Media URL',
+                    name: 'mediaUrl',
+                    type: 'string',
+                    default: '',
+                    displayOptions: {
+                        show: {
+                            channel: ['whatsapp'],
+                            messageType: ['utilityMedia', 'marketingMedia', 'serviceMedia'],
+                        },
+                    },
+                    description: 'URL of the media to be sent',
+                },
+                {
+                    displayName: 'Media Type',
+                    name: 'mediaType',
+                    type: 'options',
+                    displayOptions: {
+                        show: {
+                            channel: ['whatsapp'],
+                            messageType: ['utilityMedia', 'marketingMedia', 'serviceMedia'],
+                        },
+                    },
+                    options: [
+                        { name: 'Image', value: 'image' },
+                        { name: 'Video', value: 'video' },
+                        { name: 'Document', value: 'document' },
+                    ],
+                    default: 'image',
+                },
+                {
+                    displayName: 'Recipients',
+                    name: 'recipients',
+                    type: 'string',
+                    default: '',
+                    description: 'Comma-separated list of phone numbers',
+                    required: true,
+                },
+                {
+                    displayName: 'Body Parameters',
+                    name: 'bodyParameters',
+                    type: 'fixedCollection',
+                    typeOptions: {
+                        multipleValues: true,
+                    },
+                    displayOptions: {
+                        show: {
+                            channel: ['whatsapp'],
+                            messageType: ['utilityText', 'utilityMedia', 'marketingText', 'marketingMedia'],
+                        },
+                    },
+                    default: {},
+                    options: [
+                        {
+                            name: 'parameters',
+                            displayName: 'Parameter',
+                            values: [
+                                { displayName: 'Key', name: 'key', type: 'string', default: '' },
+                                { displayName: 'Value', name: 'value', type: 'string', default: '' },
+                            ],
+                        },
+                    ],
+                    description: 'Template body parameters',
+                }
             ],
         };
     }
