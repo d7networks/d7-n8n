@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-d7-messaging",
-  "version": "0.1.5",
-  "description": "Custom n8n nodes for D7 API",
+  "version": "0.1.8",
+  "description": "Custom n8n nodes for D7 API to send SMS and WhatsApp messages",
   "keywords": [
     "n8n-community-node-package"
   ],
@@ -35,7 +35,7 @@
       "dist/src/credentials/D7Api.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/D7Messaging/D7Messaging.node.js"
+      "dist/src/nodes/D7Messaging/D7Messaging.node.js"
     ]
   },
   "devDependencies": {
