@@ -100,7 +100,7 @@ function validatePhone(phone) {
 Need help? Contact 
 ## Support
 
-- **Email**: [support@example.com](mailto:support@d7networks.com)
+- **Email**: [support@d7networks.com](mailto:support@d7networks.com)
 - **Website**: [Visit Our Website](https://d7networks.com)
 
 
