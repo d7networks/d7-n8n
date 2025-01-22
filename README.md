@@ -1,186 +1,108 @@
+![D7 Messaging Logo](dist/src/nodes/D7Messaging/d7.svg)
+
 # D7Networks Messaging Integration for n8n
-
-[![N8N Community Node](https://img.shields.io/badge/n8n-community-green)](https://n8n.io)
-[![NPM Version](https://img.shields.io/npm/v/n8n-nodes-d7-messaging)](https://www.npmjs.com/package/n8n-nodes-d7-messaging)
-
-Professional-grade SMS and WhatsApp messaging integration for n8n workflow automation platform.
-
-## Table of Contents
-- [Overview](#overview)
-- [Installation](#installation)
-  - [Prerequisites](#prerequisites)
-  - [Quick Install](#quick-install)
-  - [Development Setup](#development-setup)
-  - [Verification](#verification)
-- [Configuration](#configuration)
-- [SMS Integration](#sms-integration)
-  - [Basic Usage](#basic-usage)
-  - [Advanced Options](#advanced-options)
-- [WhatsApp Integration](#whatsapp-integration)
-  - [Template Messages](#template-messages)
-  - [Media Messages](#media-messages)
-- [API Reference](#api-reference)
-- [Error Handling](#error-handling)
-- [Support](#support)
-- [License](#license)
-
-## Overview
-
-This integration allows you to send SMS and WhatsApp messages using D7Networks through n8n workflows. It supports bulk messaging, template messages, media messages, and advanced delivery tracking.
 
 ## Installation
 
-### Prerequisites
+### 1. Install D7Networks Node
+1. Open your n8n workspace
+2. Click on Settings (⚙️) in the bottom left corner
+3. Select Community Nodes from the sidebar
+4. Search for `n8n-nodes-d7-messaging`
+5. Click Install
+6. Restart n8n when prompted
 
-Before you start, make sure you have:
-- Node.js (v20.x or higher)
-- pnpm (latest version)
-- n8n development environment
-- D7Networks API credentials
-
-### Quick Install
-
-1. Open n8n web interface
-2. Navigate to Settings → Community Nodes
-3. Search for `n8n-nodes-d7-messaging`
-4. Click Install
-5. Restart n8n
-
-### Development Setup
-
-```bash
-# Install pnpm globally
-npm i pnpm -g
-
-# Clone n8n repository
-git clone https://github.com/n8n-io/n8n.git
-cd n8n
-
-# Install dependencies
-pnpm install
-
-# Start development server
-pnpm run dev
-```
-
-### Verification
-
+### 2. Verify Installation
 1. Refresh your n8n workspace
-2. Search for "D7 Messaging" in nodes panel
-3. Verify node appears in search results
-4. Test by dragging into workflow
+2. Open the nodes panel (right sidebar)
+3. Search for "D7"
+4. You should see "D7 SMS" and "D7 WhatsApp" nodes
+5. Try dragging either node into your workflow
 
-## Configuration
+### 3. Configure Authentication
+1. Get your API key from [D7 Networks](https://app.d7networks.com/api-tokens)
+2. In your n8n workflow:
+   * Add D7 SMS or D7 WhatsApp node
+   * Click "Create New Credential"
+   * Enter your API key
+   * Save credential
 
-### Authentication
-1. Get your API key from D7Networks Portal
-2. In n8n:
-   - Open D7 node settings
-   - Click "Create New Credential"
-   - Enter your API key
-   - Save credential
+## Creating Messaging Workflows
 
-## SMS Integration
-
-### API Details
-
-#### Endpoint
+### Basic Workflow Structure
 ```
-POST https://api.d7networks.com/messages/v1/send
+[Contact Source] → [Function Node] → [D7 SMS/WhatsApp Node]
 ```
 
-#### Configuration Parameters
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| Recipient Numbers | String | Yes | Phone numbers in E.164 format (e.g., +971XXXXXXXX) |
-| Message Content | String | Yes | SMS text content |
-| API Key | String | Yes | D7Networks authentication token |
+### Step 1: Import Contacts
+Choose any contact source node:
+- Google Sheets
+- Airtable
+- Database nodes
+- Google Contacts
+- CSV
+- Any CRM integration
 
-### Default Settings
-- Channel: SMS
-- Message Type: Text
-- Data Coding: Text
-- Default Originator: SignOTP
-- Client Reference: D7-AirTableSMS
+### Step 2: Process Contact Data
+Add a Function node to format your contacts:
 
-## WhatsApp Integration
-
-### Message Categories
-
-#### 1. Utility Messages
-- **Purpose**: Transactional communications
-- **Types**: Text or Media-based
-- **Requirements**: Pre-approved templates
-- **Features**: Dynamic parameters
-
-#### 2. Marketing Messages
-- **Purpose**: Promotional content
-- **Types**: Text or Media-based
-- **Requirements**: Pre-approved templates
-- **Features**: Rich media content
-
-#### 3. Service Messages
-- **Purpose**: Customer service communications
-- **Types**:
-  - Text: Custom messages with URL preview
-  - Media: Rich media with captions
-
-### Configuration Parameters
-
-#### Common Parameters
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| Message Type | Options | Yes | Select message category and type |
-| Originator | String | Yes | WhatsApp business number |
-| Recipients | String | Yes | Comma-separated phone numbers |
-| API Key | String | Yes | D7Networks authentication token |
-
-#### Template-specific Parameters
-| Parameter | Type | Applicable Types | Description |
-|-----------|------|-----------------|-------------|
-| Template ID | String | Utility/Marketing | Template identifier |
-| Language | String | Utility/Marketing | Template language code |
-| Body Parameters | Collection | Utility/Marketing | Dynamic template values |
-
-#### Media Parameters
-| Parameter | Type | Applicable Types | Description |
-|-----------|------|-----------------|-------------|
-| Media URL | String | Media messages | Content URL |
-| Media Type | Options | Media messages | Image/Video/Document |
-| Media Caption | String | Service Media | Optional caption |
-
-### Supported Media Formats
-- **Images**: JPG, PNG
-- **Videos**: MP4
-- **Documents**: PDF, DOC, DOCX
-
-## API Reference
-
-### Authentication
-All APIs use Bearer token authentication:
-```
-Authorization: Bearer {API_KEY}
+```javascript
+// Format contacts for D7 nodes
+return items.map(item => ({
+  json: {
+    recipient: item.json.phone,  // or any field containing phone number
+    name: item.json.name,        // or any field containing name
+  }
+}));
 ```
 
-### Response Format
-API responses include:
-- Request status
-- Message ID
-- Delivery information
-- Error details (if any)
+### Step 3: Configure D7 Node
 
-## Error Handling
+#### For SMS:
+1. Connect Function node to D7 SMS node
+2. Configure fields:
+   * Recipients: `{{ $json.recipient }}`
+   * Message: `Hello {{ $json.name }}, your message here`
 
-Common error scenarios and solutions:
-- **401 Unauthorized**: Check API key validity
-- **400 Bad Request**: Verify parameter format
-- **429 Too Many Requests**: Implement rate limiting
-- **500 Server Error**: Contact support
+#### For WhatsApp:
+1. Connect Function node to D7 WhatsApp node
+2. Configure fields:
+   * Recipients: `{{ $json.recipient }}`
+   * Choose message type (Template/Text/Media)
+   * Add message content or template parameters
 
+## Testing Your Workflow
+
+1. Start with test contacts (2-3 numbers)
+2. Activate workflow
+3. Check message delivery
+4. Monitor for any errors
+5. Scale up after successful testing
+
+## Common Issues & Solutions
+
+### Invalid Phone Numbers
+- Ensure numbers are in E.164 format
+- Add validation in Function node:
+```javascript
+// Phone number validation
+function validatePhone(phone) {
+  const cleaned = phone.replace(/\D/g, '');
+  return cleaned.startsWith('+') ? cleaned : '+' + cleaned;
+}
+```
+
+### Message Delivery Issues
+- Verify API credentials
+- Check recipient number format
+- Ensure sufficient credit balance
+
+Need help? Contact 
 ## Support
-- [D7Networks Documentation](https://d7networks.com/docs)
-- [GitHub Issues](https://github.com/yourusername/n8n-nodes-d7-messaging/issues)
-- Email: support@d7networks.com
 
-## License
-MIT License - see [LICENSE](LICENSE) for details
+- **Email**: [support@example.com](mailto:support@d7networks.com)
+- **Website**: [Visit Our Website](https://d7networks.com)
+
+
+
+Would you like me to expand on any of these sections or add more specific workflow examples?
